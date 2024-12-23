@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список моделей</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    #modelList { position: absolute; top: 10px; left: 10px; z-index: 1; background: rgba(255, 255, 255, 0.7); padding: 10px; border-radius: 5px; }
+    #addModelBtn { position: absolute; top: 10px; right: 10px; z-index: 1; padding: 10px; border: none; background-color: #3498db; color: white; cursor: pointer; border-radius: 5px; }
+    #modelContainer { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; height: 100vh; }
+    .modelCard { margin: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="modelList">
+    <h2>Загруженные модели</h2>
+    <div id="modelContainer"></div>
+  </div>
+  <button id="addModelBtn">Добавить модель</button>
+
+  <!-- Используем модульный тип скрипта -->
+  <script type="module" src="view_models.js"></script>
+</body>
+</html>

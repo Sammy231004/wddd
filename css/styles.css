@@ -1,0 +1,158 @@
+/* styles.css */
+
+/* Общие стили */
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    font-family: Arial, sans-serif; /* Используемый шрифт */
+}
+
+/* Стили для панели загрузки */
+#uploadForm {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Тень для эффекта поднятия */
+}
+
+#uploadForm input[type="file"],
+#uploadForm button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5e8df7; /* Цвет фона */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+}
+
+#uploadForm input[type="file"]:hover,
+#uploadForm button:hover {
+    background-color: #2d4a8f; /* Измененный цвет фона при наведении */
+}
+
+/* Общие стили для панели настроек */
+#settings-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    background-color: rgba(81, 81, 81, 0.9); /* Цвет фона */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.2); /* Тень для эффекта поднятия */
+    overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+    max-height: calc(100vh - 40px); /* Ограничиваем максимальную высоту */
+}
+
+/* Иконки настроек */
+.settings-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.settings-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #a8a8a8; /* Цвет иконки */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Плавное изменение цвета при наведении */
+}
+
+.settings-icon:hover {
+    color: #f2a847; /* Измененный цвет при наведении */
+}
+
+/* Панели настроек */
+.settings-content {
+    display: none;
+    animation: fadeIn 0.5s ease; /* Анимация появления */
+}
+
+.settings-content {
+    padding-bottom: 20px; /* Добавляем дополнительное пространство внизу */
+}
+
+.settings-content.active {
+    display: block;
+}
+
+/* Стили для содержимого настроек */
+.settings-content h2 {
+    color: #f2f2f2; /* Цвет заголовка */
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.settings-content label {
+    color: #d9d9d9; /* Цвет текста метки */
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.settings-content input[type="text"],
+.settings-content input[type="color"],
+.settings-content input[type="file"],
+.settings-content input[type="range"],
+.settings-content button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3f3f3f; /* Цвет фона */
+    color: #f2f2f2; /* Цвет текста */
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+}
+
+.settings-content input[type="text"]:hover,
+.settings-content input[type="color"]:hover,
+.settings-content input[type="file"]:hover,
+.settings-content input[type="range"]:hover,
+.settings-content button:hover {
+    background-color: #696969; /* Измененный цвет фона при наведении */
+}
+
+.settings-content input[type="color"] {
+    width: 30px; /* Ширина поля для выбора цвета */
+    padding: 0;
+}
+
+/* Стили для слайдера */
+.settings-content input[type="range"]::-webkit-slider-thumb {
+    background-color: #f2a847; /* Цвет бегунка */
+}
+
+.settings-content input[type="range"]::-moz-range-thumb {
+    background-color: #f2a847; /* Цвет бегунка */
+}
+
+/* Стили для кнопок */
+.settings-content button {
+    background-color: #f2a847; /* Цвет кнопки */
+    cursor: pointer;
+}
+
+.settings-content button:hover {
+    background-color: #d99f37; /* Измененный цвет кнопки при наведении */
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

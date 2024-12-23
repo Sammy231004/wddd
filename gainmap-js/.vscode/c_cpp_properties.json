@@ -1,0 +1,13 @@
+{
+  "configurations": [
+      {
+          "name": "Emscripten",
+          "includePath": [
+              "${workspaceFolder}/**"
+          ],
+          "defines": [],
+          "compileCommands": "${workspaceFolder}/libultrahdr-wasm/build/compile_commands.json"
+      }
+  ],
+  "version": 4
+}

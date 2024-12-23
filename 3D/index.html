@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model Viewer</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    #modelList { position: absolute; top: 10px; left: 10px; z-index: 1; background: rgba(255, 255, 255, 0.7); padding: 10px; border-radius: 5px; }
+    #addModelBtn { position: absolute; top: 10px; right: 10px; z-index: 1; padding: 10px; border: none; background-color: #3498db; color: white; cursor: pointer; border-radius: 5px; }
+    #modelContainer { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; height: 100vh; }
+    .modelCard { margin: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="modelList">
+    <h2>Загруженные модели</h2>
+    <div id="modelContainer"></div>
+  </div>
+  <button id="addModelBtn">Добавить модель</button>
+
+  <!-- Используем модульный тип скрипта -->
+  <script type="module">
+    // Получаем контейнер для моделей
+    const modelContainer = document.getElementById('modelContainer');
+
+    // Получаем список моделей из папки resources
+    fetch('/resources')
+      .then(response => response.json())
+      .then(models => {
+        models.forEach((model, index) => {
+          const modelCard = document.createElement('div');
+          modelCard.classList.add('modelCard');
+          modelCard.innerText = `Модель ${index + 1}`;
+
+          // Добавим обработчик события для просмотра модели при клике
+          modelCard.addEventListener('click', () => {
+            // Перенаправляем пользователя на страницу просмотра конкретной модели
+            window.location.href = `view_model.html?model=${encodeURIComponent(model)}`;
+          });
+
+          modelContainer.appendChild(modelCard);
+        });
+      });
+
+    // Добавим обработчик события для кнопки "Добавить модель"
+    const addModelBtn = document.getElementById('addModelBtn');
+    addModelBtn.addEventListener('click', () => {
+      // Перенаправляем пользователя на страницу добавления модели
+      window.location.href = 'add_model.html';
+    });
+  </script>
+  <script type="module">
+    // Функция для отправки модели на сервер
+    async function uploadModel(file) {
+      const formData = new FormData();
+      formData.append('modelFile', file);
+  
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+  
+        if (response.ok) {
+          alert('Модель успешно загружена!');
+          // Перезагружаем страницу для обновления списка моделей
+          location.reload();
+        } else {
+          alert('Ошибка загрузки модели. Пожалуйста, попробуйте ещё раз.');
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    }
+  
+    // Добавляем обработчик события для input[type="file"]
+    const fileInput = document.getElementById('modelFile');
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        uploadModel(file);
+      }
+    });
+  </script>
+</body>
+</html>

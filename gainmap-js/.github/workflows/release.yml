@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # run when tests have passed
+  workflow_run:
+    branches: [main]
+    workflows: [CI]
+    types:
+      - completed
+
+concurrency:
+  group: release
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+        - name: 'Checkout'
+          uses: nschloe/action-cached-lfs-checkout@v1
+          with:
+            submodules: recursive
+            token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+        - name: 'Download build artifacts'
+          uses: dawidd6/action-download-artifact@v2 # download artifacts
+          with:
+            name: build-artifact
+            run_id: ${{ github.event.workflow_run.id }}
+            workflow_conclusion: success
+
+
+        - name: 'Setup Nodejs'
+          uses: actions/setup-node@v3
+          with:
+            node-version: 20
+
+        - name: 'Install Packages'
+          run: npm ci
+
+        - name: 'Release'
+          run: npx semantic-release
+

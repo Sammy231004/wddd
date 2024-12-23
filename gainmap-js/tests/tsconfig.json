@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noErrorTruncation": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "lib": ["DOM", "ES2019"],
+    "paths": {
+      "three": [ "../node_modules/three/build/three.module" ],
+      "@monogrid/gainmap-js": [ "../dist/decode" ],
+      "@monogrid/gainmap-js/encode": [ "../dist/encode" ],
+      "@monogrid/gainmap-js/libultrahdr": [ "../dist/libultrahdr" ],
+      "@monogrid/gainmap-js/worker": [ "../dist/worker" ],
+      "@monogrid/gainmap-js/worker-interface": [ "../dist/worker-interface" ]
+    },
+    "types": ["@playwright/test", "@types/node"]
+  }
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <script type="module" src="3dViwer.js" ></script>
+  <script type="module" src="materialFunctions.js" ></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Viewer</title>
+  
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+  <form id="uploadForm">
+    <label for="modelFile">Выберите 3D-модель:</label>
+    <input type="file" id="modelFile" name="modelFile" accept=".obj, .fbx, .gltf, .glb" required>
+    <br>
+    <br>
+    <button type="submit">Загрузить модель</button>
+  </form>
+
+  <div id="settings-panel">
+    <div id="settings-icons" class="settings-icons">
+      <div class="settings-icon" onclick="toggleSettings('light-settings')">🌞</div>
+      <div class="settings-icon" onclick="toggleSettings('material-settings')">🎨</div>
+      <div class="settings-icon" onclick="toggleSettings('background-settings')">🖼️</div>
+    </div>
+
+    <!-- Background Settings -->
+    <div id="background-settings" class="settings-content background-settings">
+        <h2>Настройки фона и окружения</h2>
+
+        <!-- Выбор цвета фона -->
+        <label for="selectBackgroundColor">Выберите цвет фона:</label>
+        <input type="color" id="selectBackgroundColor">
+
+        <!-- Выбор текстуры окружения -->
+        <label for="selectEnvironment">Выберите текстуру окружения:</label>
+        <select id="selectEnvironment">
+            <option value="1.">Текстура 1</option>
+            <option value="texture2.jpg">Текстура 2</option>
+            <!-- Другие варианты текстур -->
+        </select>
+
+        <!-- Кнопка для выключения фона -->
+        <button id="disableBackground">Выключить фон</button>
+    </div>
+<!-- Scene Settings -->
+<div id="scene-settings" class="settings-content scene-settings">
+  <h2>Настройки сцены и модели</h2>
+  <label for="modelPosition">Положение модели:</label>
+  <input type="text" id="modelPosition" placeholder="X Y Z" readonly>
+  <br>
+  <!-- Добавленные стрелочки для поворота модели -->
+  <label for="rotateModel">Поворот модели:</label>
+  <button onclick="rotateModel('x', 90)">X+</button>
+  <button onclick="rotateModel('x', -90)">X-</button>
+  <button onclick="rotateModel('y', 90)">Y+</button>
+  <button onclick="rotateModel('y', -90)">Y-</button>
+  <button onclick="rotateModel('z', 90)">Z+</button>
+  <button onclick="rotateModel('z', -90)">Z-</button>
+  <br>
+  <label for="sceneBackground">Цвет фона:</label>
+  <input type="color" id="sceneBackground" value="#ffffff">
+</div>
+    <!-- Light Settings -->
+    <div id="light-settings" class="settings-content light-settings active">
+      <h2>Настройки света</h2>
+      <label for="lightIntensity">Интенсивность света:</label>
+      <input type="range" id="lightIntensity" min="0" max="1" step="0.1" value="1" oninput="updateLightIntensity(this.value)">
+      <br>
+      <label for="lightDirection">Направление света:</label>
+      <button id="addLightButton">Добавить источник света</button>
+      <input type="text" id="lightDirection" placeholder="X Y Z" readonly>
+      <br>
+      <button id="toggleBackgroundButton">Включить/выключить фон</button>
+      <br>
+      <label for="lightPosition">Положение света:</label>
+      <input type="text" id="lightPosition" placeholder="X Y Z" readonly>
+      
+      
+    </div>
+    
+    <!-- Material Settings -->
+    <div id="material-settings" class="settings-content material-settings">
+
+      <h2>Настройки материала</h2>
+      <input type="checkbox" id="wireframeCheckbox" onchange="toggleWireframe()" />
+<label for="wireframeCheckbox">Wireframe</label>
+      <label for="modelParts">Выберите часть модели:</label>
+<select id="partsDropdown"></select>
+      <label for="baseColor">Цвет материала:</label>
+      <input type="color" id="baseColor" value="#ffffff">
+      <br>
+      <label for="baseColorMap">Карта цвета:</label>
+      <input type="file" id="baseColorMap" value="" />
+      <br>
+      <label for="baseColorIntensity">Интенсивность цвета:</label>
+      <input type="range" id="baseColorIntensity" min="0" max="1" step="0.1" value="1">
+      <br>
+      <label for="metalnessMap">Карта металличности:</label>
+      <input type="file" id="metalnessMap" name="metalnessMap" accept=".jpg, .jpeg, .png">
+      <br>
+      <label for="metalnessIntensity">Интенсивность металличности:</label>
+      <input type="range" id="metalnessIntensity" min="0" max="1" step="0.1" value="1">
+      <br>
+      <label for="roughnessMap">Карта шероховатости:</label>
+      <input type="file" id="roughnessMap" name="roughnessMap" accept=".jpg, .jpeg, .png">
+      <br>
+    
+      <label for="roughnessIntensity">Интенсивность шероховатости:</label>
+      <input type="range" id="roughnessIntensity" min="0" max="1" step="0.1" value="1">
+      <label for="specularMap">Текстура бликов:</label>
+<input type="file" id="specularMap">
+      <label for="specularIntensity">Интенсивность бликов:</label>
+    <input type="range" id="specularIntensity" min="0" max="1" step="0.1" value="0">
+    <br>
+    <label for="reflectionIntensity">Интенсивность преломления:</label>
+    <input type="range" id="reflectionIntensity" min="0" max="1" step="0.1" value="0">
+    <label for="opacity">Прозрачность:</label>
+    <label for="opacityMap">Текстура прозрачности:</label>
+<input type="file" id="opacityMap">
+    <input type="range" id="opacity" min="0" max="1" step="0.1" value="1" />
+    <label for="ambientOcclusionMap">Текстура затенения:</label>
+<input type="file" id="ambientOcclusionMap">
+    <label for="occlusionIntensity">Интенсивность затенения:</label>
+  <input type="range" id="occlusionIntensity" min="0" max="1" step="0.1" value="0">
+  <br>
+  <label for="emissionMap">Текстура свечения:</label>
+<input type="file" id="emissionMap">
+  <label for="emissionIntensity">Интенсивность свечения:</label>
+  
+  <input type="range" id="emissionIntensity" min="0" max="1" step="0.1" value="0">
+  <label>Карта нормалей:</label>
+  <input type="file" id="normalMapInput"> 
+
+ 
+</div>
+  
+  </div>
+  </div>
+
+  <div id="viewer-container"></div>
+
+  <script>
+
+    
+    
+    const settingsIcons = document.getElementById('settings-icons');
+    const lightSettings = document.getElementById('light-settings');
+    const materialSettings = document.getElementById('material-settings');
+
+    function toggleSettings(activeSettings) {
+        lightSettings.classList.remove('active');
+        materialSettings.classList.remove('active');
+
+        if (activeSettings === 'light-settings') {
+            lightSettings.classList.add('active');
+        } else if (activeSettings === 'material-settings') {
+            materialSettings.classList.add('active');
+        }
+    }
+
+    function updateLightIntensity(value) {
+        document.getElementById('lightIntensity').value = value;
+    }
+
+    function updateLightDirection(value) {
+        document.getElementById('lightDirection').value = value;
+    }
+
+    function updateLightPosition(value) {
+        document.getElementById('lightPosition').value = value;
+    }
+
+  
+  </script>
+</body>
+</html>
